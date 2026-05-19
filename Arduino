@@ -27,16 +27,19 @@ void loop() {
 
   duration = pulseIn(echoPin, HIGH);
   distance = (duration * .0343) / 2;
-  Serial.print("Distance: ");
-  Serial.println(distance);
   delay(100);
 
   if (distance < 20) {
     for (pos = 0; pos <= 180; pos += 1) {  // goes from 0 degrees to 180 degrees
       // in steps of 1 degree
       myservo.write(pos); 
-       Serial.print("Distance: ");
-  Serial.println(distance); // tell servo to go to position in variable 'pos'
+       Serial.println("We see you");
+       Serial.println("Come closer");
+       Serial.println("You can't run");
+       Serial.println(" ");
+       delay (100);
+        // text to see 
+  // tell servo to go to position in variable 'pos'
       delay(15);           // waits 15 ms for the servo to reach the position
     }
   } else {
