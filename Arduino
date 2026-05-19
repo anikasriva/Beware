@@ -1,0 +1,45 @@
+#include <Servo.h>
+
+Servo myservo;  // create Servo object to control a servo
+// twelve Servo objects can be created on most boards
+// int pos = 0;  // variable to store the servo position
+
+const int trigPin = 9;   // trigger connected to pin 9
+const int echoPin = 10;  // echo connected to pin 10
+const int motor = 6;     // servo connected to pin 6
+int pos = 0;    // variable to store the servo position
+
+float duration, distance;  // hold the length of the sound wave and how far away the object is
+
+void setup() {
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  Serial.begin(9600);
+  myservo.attach(motor);  // attaches the servo on pin 6 to the Servo object
+}
+
+void loop() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin, HIGH);
+  distance = (duration * .0343) / 2;
+  Serial.print("Distance: ");
+  Serial.println(distance);
+  delay(100);
+
+  if (distance < 20) {
+    for (pos = 0; pos <= 180; pos += 1) {  // goes from 0 degrees to 180 degrees
+      // in steps of 1 degree
+      myservo.write(pos); 
+       Serial.print("Distance: ");
+  Serial.println(distance); // tell servo to go to position in variable 'pos'
+      delay(15);           // waits 15 ms for the servo to reach the position
+    }
+  } else {
+    myservo.write(0);
+  }
+}
