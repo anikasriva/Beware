@@ -1,2 +1,3 @@
 # Beware
-Here's the code to my project
+Here's the information for my project
+
