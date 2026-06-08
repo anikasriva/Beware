@@ -1,0 +1,100 @@
+#include <LiquidCrystal.h>
+#include <Servo.h>
+
+Servo myservo;
+
+const int trigPin = 9;
+const int echoPin = 10;
+const int motor = 6;
+
+const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+float duration, distance;
+
+int pos = 0;
+int servoDirection = 1;
+
+unsigned long lastSensorRead = 0;
+unsigned long lastServoMove = 0;
+unsigned long lastLCDMove = 0;
+
+String message = "We see you. Come closer. You can't run.   ";
+int scrollIndex = 0;
+
+const unsigned long scrollSpeed = 200;
+const unsigned long sensorInterval = 100;
+const unsigned long servoSpeed = 15;
+
+void setup() {
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+
+  Serial.begin(9600);
+  myservo.attach(motor);
+
+  lcd.begin(16, 2);
+  lcd.clear();
+}
+
+void loop() {
+  TaskOne();
+  TaskTwo();
+}
+
+void TaskOne() {
+  if (millis() - lastSensorRead >= sensorInterval) {
+    lastSensorRead = millis();
+
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
+
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+
+    duration = pulseIn(echoPin, HIGH, 30000);
+    distance = (duration * 0.0343) / 2;
+
+    Serial.print("Distance: ");
+    Serial.println(distance);
+  }
+
+  if (distance < 20) {
+    if (millis() - lastServoMove >= servoSpeed) {
+      lastServoMove = millis();
+
+      myservo.write(pos);
+
+      pos += servoDirection;
+
+      if (pos >= 180 || pos <= 0) {
+        servoDirection = -servoDirection;
+      }
+    }
+  } else {
+    pos = 0;
+    servoDirection = 1;
+    myservo.write(0);
+  }
+}
+
+void TaskTwo() {
+  if (millis() - lastLCDMove >= scrollSpeed) {
+    lastLCDMove = millis();
+
+    lcd.setCursor(0, 0);
+    lcd.print(message.substring(scrollIndex, scrollIndex + 16));
+
+    lcd.setCursor(0, 1);
+    //lcd.print("Dist: ");
+    //lcd.print(distance);
+    //lcd.print(" cm    ");
+
+    scrollIndex++;
+
+    if (scrollIndex > message.length() - 16) {
+      scrollIndex = 0;
+    }
+  }
+}
