@@ -11,11 +11,6 @@ https://github.com/user-attachments/assets/4bb7b057-b608-43d8-b2d2-05c67ed7db3b
 Advanced Prototype Motion Video:
 https://github.com/user-attachments/assets/30405ca5-2b71-4e6b-a340-1097a982995b
 
-Base Development:
-<img width="4032" height="3024" alt="IMG_9572" src="https://github.com/user-attachments/assets/f237629d-6f5e-4cc4-9f08-fb8dda5b800c" />
-
-
-
 
 
 
