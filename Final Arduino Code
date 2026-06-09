@@ -66,7 +66,7 @@ void TaskOne() {
 
       myservo.write(pos);
 
-      pos += servoDirection;
+      pos += servoDirection*3;
 
       if (pos >= 180 || pos <= 0) {
         servoDirection = -servoDirection;
